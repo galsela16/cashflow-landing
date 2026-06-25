@@ -133,14 +133,15 @@ footer a{color:rgba(255,255,255,0.6);text-decoration:none}
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script>
   Paddle.Initialize({ 
-    environment: 'sandbox',
     token: 'test_96ad91a48b70218d3a06e512436',
+    pwCustomer: {},
     eventCallback: function(data) {
       if (data.name === 'checkout.completed') {
         window.location.href = 'https://project-7bqkz.vercel.app?subscribed=true';
       }
     }
   });
+  Paddle.Environment.set('sandbox');
 
   function openCheckout(priceId, planName) {
     Paddle.Checkout.open({
