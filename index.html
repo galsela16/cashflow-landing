@@ -133,7 +133,8 @@ footer a{color:rgba(255,255,255,0.6);text-decoration:none}
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script>
   Paddle.Initialize({ 
-    token: 'live_6b23c228c0f14ef677ee772adb4',
+    environment: 'sandbox',
+    token: 'test_96ad91a48b70218d3a06e512436',
     eventCallback: function(data) {
       if (data.name === 'checkout.completed') {
         window.location.href = 'https://project-7bqkz.vercel.app?subscribed=true';
@@ -309,7 +310,7 @@ footer a{color:rgba(255,255,255,0.6);text-decoration:none}
         <li><span class="check">✓</span> Profit First</li>
         <li><span class="cross">✗</span> ניהול עובדים</li>
       </ul>
-      <button onclick="openCheckout('pri_01kvzyt0gahhhc8w61mc0sq9na', 'basic')" class="btn btn-primary" style="width:100%;text-align:center;cursor:pointer">בחר בסיסי</button>
+      <button onclick="openCheckout('pri_01kw0fknt0pvrfjqkr3zk3cy6x', 'basic')" class="btn btn-primary" style="width:100%;text-align:center;cursor:pointer">בחר בסיסי</button>
     </div>
     <div class="plan">
       <div class="plan-name">פרו</div>
@@ -322,7 +323,7 @@ footer a{color:rgba(255,255,255,0.6);text-decoration:none}
         <li><span class="check">✓</span> דוחות מתקדמים</li>
         <li><span class="check">✓</span> תמיכה מועדפת</li>
       </ul>
-      <button onclick="openCheckout('pri_01kvzyvwtjbdb968m2jhccmm0w', 'pro')" class="btn btn-outline" style="width:100%;text-align:center;cursor:pointer">בחר פרו</button>
+      <button onclick="openCheckout('pri_01kw0ffyzdz3f684zhysfv1vd0', 'pro')" class="btn btn-outline" style="width:100%;text-align:center;cursor:pointer">בחר פרו</button>
     </div>
   </div>
 </section>
