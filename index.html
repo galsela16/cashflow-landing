@@ -235,7 +235,7 @@ tr:last-child td{border-bottom:none}
         <button class="auth-tab" onclick="switchAuthTab('signup')">הרשמה חינם</button>
       </div>
       <div class="field"><label>אימייל</label><input type="email" id="auth-email" placeholder="your@email.com" /></div>
-      <div class="field"><label>סיסמה</label>
+      <div class="field"><label style="display:flex;justify-content:space-between;align-items:center">סיסמה <button type="button" id="forgot-link" onclick="showForgot()" style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;font-weight:500;padding:0">שכחתי סיסמה</button></label>
         <div style="position:relative">
           <input type="password" id="auth-password" placeholder="לפחות 6 תווים" style="padding-left:40px" />
           <button type="button" id="eye-btn" onclick="togglePass()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);line-height:1">👁️</button>
@@ -482,6 +482,28 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
+<!-- Forgot Password Modal -->
+<div class="modal-overlay" id="forgot-modal" style="display:none" onclick="if(event.target===this)closeForgot()">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header">
+      <div class="modal-title">איפוס סיסמה</div>
+      <button class="btn-del" onclick="closeForgot()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">הכניסו את כתובת האימייל שלכם ונשלח קישור לאיפוס הסיסמה.</p>
+      <div class="form-group">
+        <label>אימייל</label>
+        <input type="email" id="forgot-email" placeholder="your@email.com" />
+      </div>
+      <div class="msg" id="forgot-msg"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeForgot()">ביטול</button>
+      <button class="btn-add" id="forgot-btn" onclick="sendReset()">שלח קישור</button>
+    </div>
+  </div>
+</div>
+
 <!-- Event Modal -->
 <div class="modal-overlay" id="event-modal" style="display:none" onclick="if(event.target===this)closeEventModal()">
   <div class="modal">
@@ -629,6 +651,27 @@ async function doAuth() {
 
 function showMsg(t, type) { const m = $('auth-msg'); m.textContent = t; m.className = 'msg ' + type; }
 async function logout() { await sb.auth.signOut(); $('auth-screen').style.display = 'flex'; $('app-screen').style.display = 'none'; currentUser = null; }
+
+// ── FORGOT PASSWORD ──
+function showForgot() {
+  const emailVal = $('auth-email').value.trim();
+  if (emailVal) $('forgot-email').value = emailVal;
+  $('forgot-msg').className = 'msg';
+  $('forgot-modal').style.display = 'flex';
+}
+function closeForgot() { $('forgot-modal').style.display = 'none'; }
+async function sendReset() {
+  const email = $('forgot-email').value.trim();
+  if (!email) { const m=$('forgot-msg'); m.textContent='נא להכניס אימייל'; m.className='msg err'; return; }
+  $('forgot-btn').disabled = true; $('forgot-btn').textContent = '⏳ שולח...';
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname
+  });
+  $('forgot-btn').disabled = false; $('forgot-btn').textContent = 'שלח קישור';
+  const m = $('forgot-msg');
+  if (error) { m.textContent = error.message; m.className = 'msg err'; }
+  else { m.textContent = '✅ נשלח! בדקו את תיבת הדואר'; m.className = 'msg ok'; setTimeout(closeForgot, 3000); }
+}
 
 // ── SUBSCRIPTION ──
 async function loadSubscription() {
